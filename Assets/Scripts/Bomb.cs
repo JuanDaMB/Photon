@@ -33,7 +33,7 @@ public class Bomb : MonoBehaviour
         {
             if (Vector3.Distance(observable.transform.position, transform.position) < 3f)
             {
-                observable.TakeDamage();
+                // observable.TakeDamage();
             }
         }
         PhotonNetwork.Destroy(gameObject);

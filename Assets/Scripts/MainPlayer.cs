@@ -23,30 +23,30 @@ public class MainPlayer : MonoBehaviour, IOnEventCallback
     {
         if (!PV.IsMine) return;
         Move();
-        Cure();
-        Bomb();
+        // Cure();
+        // Bomb();
     }
 
     private void Move()
     {
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(new Vector2(0, 2f) * Time.deltaTime);
+            transform.Translate(new Vector2(0, 3f) * Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(new Vector2(0, -2f) * Time.deltaTime);
+            transform.Translate(new Vector2(0, -0.5f) * Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(new Vector2(-2f, 0f) * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, 0f, 80f) * Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(new Vector2(2f, 0) * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, 0f, -80f) * Time.deltaTime);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -118,7 +118,7 @@ public class MainPlayer : MonoBehaviour, IOnEventCallback
     {
         if (photonEvent.Code == CureEventCode)
         {
-            Observable.Heal();
+            // Observable.Heal();
         }
     }
 

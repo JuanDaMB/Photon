@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
@@ -9,39 +10,28 @@ public class PlayerObservable : MonoBehaviourPunCallbacks, IPunObservable
 {
     public SpriteRenderer SR;
 
-    public Image healthBar;
-
-    public int life;
-    public TextMeshProUGUI text;
-    private string nickName;
+    public int laps;
     private Color C;
+    private string nickname;
     
     // Start is called before the first frame update
     void Start()
     {
         SR = GetComponent<SpriteRenderer>();
-        text = GetComponentInChildren<TextMeshProUGUI>();
         C = SR.color;
     }
 
-    public void SetName(string nickName)
+    private void Update()
     {
-        this.nickName = nickName;
-        text.text = this.nickName;
+        if (laps > 10)
+        {
+            Winner.Instance.SetWinner(nickname);
+        }
     }
 
-    public void TakeDamage()
+    public void SetName(string newNickname)
     {
-        if (life <= 0)return;
-        life--;
-        healthBar.fillAmount = life / 3f;
-    }
-
-    public void Heal()
-    {
-        if (life >= 3) return;
-        life++;
-        healthBar.fillAmount = life / 3f;
+        nickname = newNickname;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -51,8 +41,7 @@ public class PlayerObservable : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(SR.color.r);
             stream.SendNext(SR.color.g);
             stream.SendNext(SR.color.b);
-            stream.SendNext(life);
-            stream.SendNext(nickName);
+            stream.SendNext(laps);
         }
         else
         {
@@ -61,10 +50,7 @@ public class PlayerObservable : MonoBehaviourPunCallbacks, IPunObservable
             C.b = (float)stream.ReceiveNext();
             C.a = 1f;
             SR.color = C;
-            life = (int)stream.ReceiveNext();
-            healthBar.fillAmount = life / 3f;
-            nickName = (string)stream.ReceiveNext();;
-            text.text = nickName;
+            laps = (int)stream.ReceiveNext();
         }
     }
 }
